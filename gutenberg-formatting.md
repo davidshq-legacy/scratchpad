@@ -98,5 +98,23 @@ onPaste( { value, onChange, html, plainText, files, activeFormats } ) {
   
   This `onPaste` handler calls `pasteHandler` and passes to it `HTML: html, plainText, mode, tagName, canUserUseUnfilteredHTML`.
 
-  
+# Paste Handler
+Location: `/blocks/src/api/raw-handling/paste-handler.js`
+
+The pasteHandler takes five parameters:
+- `HTML` (default '')
+- `plainText` (default '')
+- `mode` (default 'AUTO')
+- `tagName`
+- `canUserUseUnfilteredHTML` (default false)
+
+It then performs the following actions on the passed content:
+
+- Strip meta tags
+- Strip window markers (appears to be anything from `<html>` until `<body>` and from `</body>` to `</html>`.
+- Checks if blocks are being passed, if so, handles them as blocks.
+- Normalize unicode to use composed characters.
+- Parses markdown, if present.
+  - During this process `mode` may change from `AUTO` to `INLINE`. This is not important for our purposes.
+- 
   
