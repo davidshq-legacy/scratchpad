@@ -116,5 +116,14 @@ It then performs the following actions on the passed content:
 - Normalize unicode to use composed characters.
 - Parses markdown, if present.
   - During this process `mode` may change from `AUTO` to `INLINE`. This is not important for our purposes.
-- 
-  
+- If there are shortcodes in the pasted content any that are recognized are converted using the `shortcodeConverter()` function - again, not important for our purposes.
+- Under certain conditions the pasted content is run through `filteredInlineHTML`.
+- We set `rawTransforms` equal to `getRawTransformations()`, `phrasingContentSchema` to `getPhrasingContentScheme()`, and `blockContentSchema` to `getBlockContentSchema()`.
+- Note that `rawTransforms` and `phrasingContentSchema` are then passed as parameters to `blockContentSchema`.
+- The code handles shortcodes.
+- Now a number of filters are defined: `googleDocsUIDRemover`, `msListConverter`, `headRemover`, `listReducer`, `imageCorrector`, `phrasingContentReducer`, `specialCommentConverter`, `commentRemover`, `figureContentReducer`, `blockquoteNormaliser`. 
+- If `canUserUseUnfilteredHTML` is false then `iframeRemover` is added to the front of the `filters` array above.
+- Define constant `schema` which takes as parameters `blockContentSchema` and `phrasingContentSchema`.
+- The `piece` of content is run through specific filters: `deepFilterHTML`, `removeInvalidHTML`, `normaliseBlocks`, and `deepFilterHTML` again - this time with specific formats passed: `htmlFormattingRemover`, `brRemover`, `emptyParagraphRemover`.
+- Some information is logged to the console and then `htmlToBlocks` is returned with `{ html: piece, rawTransforms }`.
+- One final special case is handled and content returned.
